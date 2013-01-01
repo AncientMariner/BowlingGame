@@ -11,16 +11,17 @@ public class Game {
     public static int totalScore;
     public static int numberOfStrikes;
     public static int frameNumber;
+    private static boolean consecutiveStrike;
 
     private int frameScore;
-    public int thirdExtraRollDueToSpare;
+    private int thirdExtraRoll;
 
-    public int getThirdExtraRollDueToSpare() {
-        return thirdExtraRollDueToSpare;
+    public int getThirdExtraRoll() {
+        return thirdExtraRoll;
     }
 
-    public void setThirdExtraRollDueToSpare(int thirdExtraRollDueToSpare) {
-        this.thirdExtraRollDueToSpare = thirdExtraRollDueToSpare;
+    public void setThirdExtraRoll(int thirdExtraRoll) {
+        this.thirdExtraRoll = thirdExtraRoll;
     }
 
     public int getFrameScore() {
@@ -34,16 +35,16 @@ public class Game {
     public void roll(int firstRollKnockedDownPins, int secondRollKnockedDownPins) {
         frameNumber++;
 
-        if (frameNumber == 10 && numberOfStrikes == 9) {
-            extraStrikes(firstRollKnockedDownPins, secondRollKnockedDownPins);
-        } else {
-            pointsChecker(firstRollKnockedDownPins, secondRollKnockedDownPins);
+        if (frameNumber == 10 ) {
 
+            TenthFrameRoll(firstRollKnockedDownPins, secondRollKnockedDownPins, getThirdExtraRoll());
+        } else {
+            validatePoints(firstRollKnockedDownPins, secondRollKnockedDownPins);
             if (firstRollKnockedDownPins + secondRollKnockedDownPins < 10) {
                 usualRoll(firstRollKnockedDownPins, secondRollKnockedDownPins);
             } else {
-                if (firstRollKnockedDownPins == 10 || secondRollKnockedDownPins == 10) {
-                    strikeRoll(firstRollKnockedDownPins);
+                if (firstRollKnockedDownPins == 10 ) {
+                    strikeRoll(firstRollKnockedDownPins, secondRollKnockedDownPins);
                 } else {
                     spareRoll(firstRollKnockedDownPins, secondRollKnockedDownPins);
                 }
@@ -52,23 +53,46 @@ public class Game {
     }
 
     private void usualRoll(int firstRollKnockedDownPins, int secondRollKnockedDownPins) {
+
+        if (consecutiveStrike == true){
+            bonusFactorForFirstRoll = 3;
+        }
+
         countPoints(firstRollKnockedDownPins, secondRollKnockedDownPins);
+
         bonusFactorForFirstRoll = 1;
         bonusFactorForSecondRoll = 1;
+
+        consecutiveStrike = false;
     }
 
     private void spareRoll(int firstRollKnockedDownPins, int secondRollKnockedDownPins) {
+
+        if (consecutiveStrike == true){
+            bonusFactorForFirstRoll = 3;
+        }
+
         countPoints(firstRollKnockedDownPins, secondRollKnockedDownPins);
+
         bonusFactorForFirstRoll = 2;
         bonusFactorForSecondRoll = 1;
 
-        if (frameNumber == 10)
-            totalScore += getThirdExtraRollDueToSpare();
+        consecutiveStrike = false;
     }
 
-    private void strikeRoll(int firstRollKnockedDownPins) {
+    private void strikeRoll(int firstRollKnockedDownPins, int secondRollKnockedDownPins) {
         numberOfStrikes++;
-        countPoints(firstRollKnockedDownPins, 0);
+
+        if (consecutiveStrike == true){
+            bonusFactorForFirstRoll = 3;
+        }
+
+        countPoints(firstRollKnockedDownPins, secondRollKnockedDownPins);
+
+        if (bonusFactorForFirstRoll == 2 || bonusFactorForSecondRoll == 2) {
+            consecutiveStrike = true;
+        }
+
         bonusFactorForFirstRoll = 2;
         bonusFactorForSecondRoll = 2;
     }
@@ -78,15 +102,40 @@ public class Game {
         totalScore += getFrameScore();
     }
 
-    private void extraStrikes(int firstRollKnockedDownPins, int secondRollKnockedDownPins) {
-        if (firstRollKnockedDownPins == 10 && secondRollKnockedDownPins == 10 ){
-        totalScore = 300;
-        } else {
-            totalScore += (firstRollKnockedDownPins + secondRollKnockedDownPins) * 2;
+    private void TenthFrameRoll(int firstRollKnockedDownPins, int secondRollKnockedDownPins, int thirdExtraRoll) {
+        if (firstRollKnockedDownPins == 10){
+            lastFrameWithStrikeRoll(firstRollKnockedDownPins, secondRollKnockedDownPins, thirdExtraRoll);
+        } else if ((firstRollKnockedDownPins + secondRollKnockedDownPins) == 10) {
+            lastFrameWithSpareRoll(firstRollKnockedDownPins, secondRollKnockedDownPins, thirdExtraRoll);
         }
     }
 
-    private void pointsChecker(int firstRollKnockedDownPins, int secondRollKnockedDownPins) {
+    private void lastFrameWithStrikeRoll(int firstRollKnockedDownPins, int secondRollKnockedDownPins, int thirdExtraRoll) {
+        if( numberOfStrikes == 9) {
+            totalScore = 270;
+        } else {
+            totalScore += firstRollKnockedDownPins;
+        }
+
+        if (secondRollKnockedDownPins == 10 && thirdExtraRoll == 10 && numberOfStrikes == 9){
+            totalScore = 300;
+        } else {
+            totalScore += secondRollKnockedDownPins;
+            totalScore += thirdExtraRoll;
+        }
+    }
+
+    private void lastFrameWithSpareRoll(int firstRollKnockedDownPins, int secondRollKnockedDownPins, int thirdExtraRoll) {
+        totalScore += firstRollKnockedDownPins;
+        totalScore += secondRollKnockedDownPins;
+
+        if ((firstRollKnockedDownPins + secondRollKnockedDownPins) < 10) {
+            validatePoints(firstRollKnockedDownPins + secondRollKnockedDownPins, thirdExtraRoll);
+            totalScore += thirdExtraRoll;
+        }
+    }
+
+    private void validatePoints(int firstRollKnockedDownPins, int secondRollKnockedDownPins) {
         int sumOfPoints = firstRollKnockedDownPins + secondRollKnockedDownPins;
 
         if (sumOfPoints > 10 || sumOfPoints < 0) {
