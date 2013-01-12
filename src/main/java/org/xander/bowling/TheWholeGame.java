@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 
 import static java.lang.System.exit;
 
-public class RealGame {
+public class TheWholeGame {
 
     public static void main(String[] args) {
         System.out.println("Welcome, this is Bowling\n" +
@@ -22,8 +22,8 @@ public class RealGame {
             int secondRoll = 0;
             int thirdRoll = 0;
             System.out.println("\nFrame # " + (i + 1));
-            Game frame = new Game();
-            System.out.println("\n### Your current score is: " + Game.totalScore + " ###");
+            Frame frame = new Frame();
+            System.out.println("\n### Your current score is: " + Frame.gameTotalScore + " ###");
 
             try {
                 if (firstRoll < 0 || firstRoll > 10) {
@@ -39,7 +39,7 @@ public class RealGame {
                     if (firstRoll == 10) {
                         System.out.println("There is an ability of the extra 2 rolls, " +
                                 "due to first strike roll in the 10th frame, please roll...");
-                        //Game.totalScore = 270;
+                        //Frame.gameTotalScore = 270;
 
                         System.out.println("\nRoll 2: ");
                         secondRoll = Integer.parseInt(in.readLine());
@@ -47,7 +47,7 @@ public class RealGame {
                         System.out.println("\nRoll 3: ");
                         thirdRoll = Integer.parseInt(in.readLine());
 
-                        frame.setThirdExtraRoll(thirdRoll);
+                        frame.setThirdExtraRollInTenthFrameKnockedDownPins(thirdRoll);
                         frame.roll(firstRoll, secondRoll);
 
                     } else if (((firstRoll + secondRoll) == 10)) {
@@ -60,7 +60,7 @@ public class RealGame {
                         if (((firstRoll + secondRoll) < 10)) {
                             System.out.println("There is an extra third roll...");
 
-                            frame.setThirdExtraRoll(thirdRoll);
+                            frame.setThirdExtraRollInTenthFrameKnockedDownPins(thirdRoll);
                         }
                         frame.roll(firstRoll, secondRoll);
                     }
@@ -104,6 +104,6 @@ public class RealGame {
 
         }
         System.out.println("\nCongratulations, you finished the game.\n" +
-                "Your final score is: " + Game.totalScore);
+                "Your final score is: " + Frame.gameTotalScore);
     }
 }
