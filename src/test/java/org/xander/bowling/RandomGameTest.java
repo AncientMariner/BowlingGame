@@ -13,8 +13,8 @@ public class RandomGameTest {
         Frame.currentFrameNumber = 0;
         Frame.strikesPerGameNumber = 0;
         Frame.consecutiveStrike = false;
-        Frame.bonusFactorForFirstRoll = 1;
-        Frame.bonusFactorForSecondRoll = 1;
+        Frame.bonusForFirstRoll = 1;
+        Frame.bonusForSecondRoll = 1;
     }
 
     @Test

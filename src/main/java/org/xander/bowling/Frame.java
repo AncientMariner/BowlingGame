@@ -6,8 +6,8 @@ public class Frame {
 
     private Logger logger = Logger.getLogger(getClass());
 
-    public static int bonusFactorForFirstRoll;
-    public static int bonusFactorForSecondRoll;
+    public static int bonusForFirstRoll;
+    public static int bonusForSecondRoll;
     public static int strikesPerGameNumber;
     public static int currentFrameNumber;
     public static int gameTotalScore;
@@ -37,94 +37,114 @@ public class Frame {
         currentFrameNumber++;
 
         if (currentFrameNumber == 10) {
-            tenthFrameExtraRoll(firstRollKnockedDownPins, secondRollKnockedDownPins, getThirdExtraRollInTenthFrameKnockedDownPins());
+            tenthFrameRoll(firstRollKnockedDownPins, secondRollKnockedDownPins, getThirdExtraRollInTenthFrameKnockedDownPins());
         } else {
-            verifyPointsAreInGameRulesRange(firstRollKnockedDownPins, secondRollKnockedDownPins);
-            if (firstRollKnockedDownPins + secondRollKnockedDownPins < MAX_KNOCKED_DOWN_PINS) {
-                usualRoll(firstRollKnockedDownPins, secondRollKnockedDownPins);
-            } else {
-                if (firstRollKnockedDownPins == MAX_KNOCKED_DOWN_PINS) {
-                    strikeRoll(firstRollKnockedDownPins, secondRollKnockedDownPins);
-                } else {
-                    spareRoll(firstRollKnockedDownPins, secondRollKnockedDownPins);
-                }
-            }
+            ordinaryRollFromFirstToNinthFrame(firstRollKnockedDownPins, secondRollKnockedDownPins);
         }
     }
 
-    private void usualRoll(int firstRollKnockedDownPins, int secondRollKnockedDownPins) {
+    private void ordinaryRollFromFirstToNinthFrame(int firstRollKnockedDownPins, int secondRollKnockedDownPins) {
+
+        verifyPointsAreInGameRulesRange(firstRollKnockedDownPins, secondRollKnockedDownPins);
+
+        if (firstRollKnockedDownPins + secondRollKnockedDownPins < MAX_KNOCKED_DOWN_PINS) {
+            openFrameRoll(firstRollKnockedDownPins, secondRollKnockedDownPins);
+        } else {
+            frameRollWithBonus(firstRollKnockedDownPins, secondRollKnockedDownPins);
+        }
+    }
+
+    private void frameRollWithBonus(int firstRollKnockedDownPins, int secondRollKnockedDownPins) {
+        if (firstRollKnockedDownPins == MAX_KNOCKED_DOWN_PINS) {
+            strike();
+        } else {
+            spare(firstRollKnockedDownPins, secondRollKnockedDownPins);
+        }
+    }
+
+    private void openFrameRoll(int firstRollKnockedDownPins, int secondRollKnockedDownPins) {
 
         calculateScore(firstRollKnockedDownPins, secondRollKnockedDownPins);
 
-        bonusFactorForFirstRoll = 1;
-        bonusFactorForSecondRoll = 1;
+        bonusForFirstRoll = 1;
+        bonusForSecondRoll = 1;
 
         consecutiveStrike = false;
     }
 
-    private void spareRoll(int firstRollKnockedDownPins, int secondRollKnockedDownPins) {
+    private void spare(int firstRollKnockedDownPins, int secondRollKnockedDownPins) {
 
         calculateScore(firstRollKnockedDownPins, secondRollKnockedDownPins);
 
-        bonusFactorForFirstRoll = 2;
-        bonusFactorForSecondRoll = 1;
+        bonusForFirstRoll = 2;
+        bonusForSecondRoll = 1;
 
         consecutiveStrike = false;
     }
 
-    private void strikeRoll(int firstRollKnockedDownPins, int secondRollKnockedDownPins) {
+    private void strike() {
         strikesPerGameNumber++;
 
-        calculateScore(firstRollKnockedDownPins, secondRollKnockedDownPins);
+        calculateScore(MAX_KNOCKED_DOWN_PINS, 0);
 
-        if (bonusFactorForFirstRoll == 2 || bonusFactorForSecondRoll == 2) {
+        if (bonusForFirstRoll == 2 || bonusForSecondRoll == 2) {
             consecutiveStrike = true;
         }
 
-        bonusFactorForFirstRoll = 2;
-        bonusFactorForSecondRoll = 2;
+        bonusForFirstRoll = 2;
+        bonusForSecondRoll = 2;
+
+        if (strikesPerGameNumber == 9) {
+            gameTotalScore = 270;
+        }
     }
 
     private void calculateScore(int firstRollKnockedDownPins, int secondRollKnockedDownPins) {
         if (consecutiveStrike == true) {
-            bonusFactorForFirstRoll = 3;
+            bonusForFirstRoll = 3;
         }
 
-        setCurrentFrameScore(firstRollKnockedDownPins * bonusFactorForFirstRoll + secondRollKnockedDownPins * bonusFactorForSecondRoll);
+        setCurrentFrameScore(firstRollKnockedDownPins * bonusForFirstRoll + secondRollKnockedDownPins * bonusForSecondRoll);
         gameTotalScore += getCurrentFrameScore();
     }
 
-    private void tenthFrameExtraRoll(int firstRollKnockedDownPins, int secondRollKnockedDownPins, int thirdExtraRollInTenthFrameKnockedDownPins) {
+    private void tenthFrameRoll(int firstRollKnockedDownPins, int secondRollKnockedDownPins, int thirdExtraRollInTenthFrameKnockedDownPins) {
         if (firstRollKnockedDownPins == MAX_KNOCKED_DOWN_PINS) {
-            strikeRollInLastFrame(firstRollKnockedDownPins, secondRollKnockedDownPins, thirdExtraRollInTenthFrameKnockedDownPins);
+            strikeInLastFrame(secondRollKnockedDownPins, thirdExtraRollInTenthFrameKnockedDownPins);
         } else if ((firstRollKnockedDownPins + secondRollKnockedDownPins) == MAX_KNOCKED_DOWN_PINS) {
-            spareRollInLastFrame(firstRollKnockedDownPins, secondRollKnockedDownPins, thirdExtraRollInTenthFrameKnockedDownPins);
+            spareInLastFrame(firstRollKnockedDownPins, secondRollKnockedDownPins, thirdExtraRollInTenthFrameKnockedDownPins);
         }
     }
 
-    private void strikeRollInLastFrame(int firstRollKnockedDownPins, int secondRollKnockedDownPins, int thirdExtraRollInTenthFrameKnockedDownPins) {
-        if (strikesPerGameNumber == 9) {
-            gameTotalScore = 270;
-        } else {
-            gameTotalScore += firstRollKnockedDownPins;
-        }
+    private void strikeInLastFrame(int secondRollKnockedDownPins, int thirdExtraRollInTenthFrameKnockedDownPins) {
+        gameTotalScore += MAX_KNOCKED_DOWN_PINS;
+        strikesPerGameNumber++;
 
-        if (secondRollKnockedDownPins == MAX_KNOCKED_DOWN_PINS && thirdExtraRollInTenthFrameKnockedDownPins == MAX_KNOCKED_DOWN_PINS && strikesPerGameNumber == 9) {
-            gameTotalScore = 300;
+        extraThirdStrikeRoll(secondRollKnockedDownPins, thirdExtraRollInTenthFrameKnockedDownPins);
+    }
+
+    private void extraThirdStrikeRoll(int secondRollKnockedDownPins, int thirdExtraRollInTenthFrameKnockedDownPins) {
+        if (strikesPerGameNumber == 10 && secondRollKnockedDownPins == MAX_KNOCKED_DOWN_PINS && thirdExtraRollInTenthFrameKnockedDownPins == MAX_KNOCKED_DOWN_PINS) {
+            gameTotalScore += MAX_KNOCKED_DOWN_PINS + MAX_KNOCKED_DOWN_PINS;
+            strikesPerGameNumber += 2;
         } else {
             gameTotalScore += secondRollKnockedDownPins;
             gameTotalScore += thirdExtraRollInTenthFrameKnockedDownPins;
         }
     }
 
-    private void spareRollInLastFrame(int firstRollKnockedDownPins, int secondRollKnockedDownPins, int thirdExtraRollInTenthFrameKnockedDownPins) {
-        gameTotalScore += firstRollKnockedDownPins;
-        gameTotalScore += secondRollKnockedDownPins;
+    private void spareInLastFrame(int firstRollKnockedDownPins, int secondRollKnockedDownPins, int thirdExtraRollInTenthFrameKnockedDownPins) {
+        gameTotalScore += firstRollKnockedDownPins + secondRollKnockedDownPins;
 
         if ((firstRollKnockedDownPins + secondRollKnockedDownPins) < MAX_KNOCKED_DOWN_PINS) {
-            verifyPointsAreInGameRulesRange(firstRollKnockedDownPins + secondRollKnockedDownPins, thirdExtraRollInTenthFrameKnockedDownPins);
-            gameTotalScore += thirdExtraRollInTenthFrameKnockedDownPins;
+            extraThirdSpareRoll(firstRollKnockedDownPins, secondRollKnockedDownPins, thirdExtraRollInTenthFrameKnockedDownPins);
         }
+    }
+
+    private void extraThirdSpareRoll(int firstRollKnockedDownPins, int secondRollKnockedDownPins, int thirdExtraRollInTenthFrameKnockedDownPins) {
+        verifyPointsAreInGameRulesRange(firstRollKnockedDownPins + secondRollKnockedDownPins, thirdExtraRollInTenthFrameKnockedDownPins);
+
+        gameTotalScore += thirdExtraRollInTenthFrameKnockedDownPins;
     }
 
     private void verifyPointsAreInGameRulesRange(int firstRollKnockedDownPins, int secondRollKnockedDownPins) {
@@ -132,6 +152,7 @@ public class Frame {
 
         if (sumOfPointsForTwoRollsPerFrame > MAX_KNOCKED_DOWN_PINS || sumOfPointsForTwoRollsPerFrame < 0) {
             logger.error("There is something wrong with your bowling, please contact your local bowling dealer");
+
             throw new RuntimeException();
         }
     }

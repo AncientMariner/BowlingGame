@@ -12,16 +12,15 @@ public class TenStrikesGameTest {
         Frame.currentFrameNumber = 0;
         Frame.strikesPerGameNumber = 0;
         Frame.consecutiveStrike = false;
-        Frame.bonusFactorForFirstRoll = 1;
-        Frame.bonusFactorForSecondRoll = 1;
+        Frame.bonusForFirstRoll = 1;
+        Frame.bonusForSecondRoll = 1;
     }
 
     @Test
-    public void test10StrikesGame() {
+    public void testTenStrikesGame() {
         int firstRollKnockedDownPins = 10;
         int secondRollKnockedDownPins = 0;
         int extra10thFirstSrike = 10;
-        int extra10thSecondStrike = 0;
 
         Frame frame1 = new Frame();
         frame1.roll(firstRollKnockedDownPins, secondRollKnockedDownPins);
@@ -50,10 +49,13 @@ public class TenStrikesGameTest {
         Frame frame9 = new Frame();
         frame9.roll(firstRollKnockedDownPins, secondRollKnockedDownPins);
 
-        Frame frame10 = new Frame();
-        frame10.setThirdExtraRollInTenthFrameKnockedDownPins(extra10thSecondStrike);
-        frame10.roll(extra10thFirstSrike, extra10thSecondStrike);
-
         Assert.assertEquals(270, Frame.gameTotalScore);
+
+        Frame frame10 = new Frame();
+        frame10.setThirdExtraRollInTenthFrameKnockedDownPins(0);
+        frame10.roll(extra10thFirstSrike, 0);
+
+        Assert.assertEquals(10, Frame.strikesPerGameNumber);
+        Assert.assertEquals(280, Frame.gameTotalScore);
     }
 }

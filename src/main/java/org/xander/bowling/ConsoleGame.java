@@ -6,56 +6,51 @@ import java.io.InputStreamReader;
 
 import static java.lang.System.exit;
 
-public class TheWholeGame {
+public class ConsoleGame {
 
     public static void main(String[] args) {
         System.out.println("Welcome, this is Bowling\n" +
-                "Please enter your roll points for each frame and you will get the final score");
+                                      "Please enter your roll points for each frame and you will get the final score");
 
+        InputStreamReader inputStreamReader = new InputStreamReader(System.in);
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 
-        InputStreamReader converter = new InputStreamReader(System.in);
-        BufferedReader in = new BufferedReader(converter);
-
-        for (int i = 0; i < 10; i++) {
+        for (int frameNumber = 0; frameNumber < 10; frameNumber++) {
 
             int firstRoll = 0;
             int secondRoll = 0;
             int thirdRoll = 0;
-            System.out.println("\nFrame # " + (i + 1));
+            System.out.println("\nFrame # " + (frameNumber + 1));
             Frame frame = new Frame();
             System.out.println("\n### Your current score is: " + Frame.gameTotalScore + " ###");
 
             try {
-                if (firstRoll < 0 || firstRoll > 10) {
-                    System.out.println("You entered something wrong, please try again.");
-                    exit(0);
-                }
 
                 System.out.println("\nRoll 1: ");
-                firstRoll = Integer.parseInt(in.readLine());
+                firstRoll = Integer.parseInt(bufferedReader.readLine());
 
-                if (i == 9) {
+                if (frameNumber == 9) {
 
                     if (firstRoll == 10) {
                         System.out.println("There is an ability of the extra 2 rolls, " +
-                                "due to first strike roll in the 10th frame, please roll...");
+                                "due to first strike roll bufferedReader the 10th frame, please roll...");
                         //Frame.gameTotalScore = 270;
 
                         System.out.println("\nRoll 2: ");
-                        secondRoll = Integer.parseInt(in.readLine());
+                        secondRoll = Integer.parseInt(bufferedReader.readLine());
 
                         System.out.println("\nRoll 3: ");
-                        thirdRoll = Integer.parseInt(in.readLine());
+                        thirdRoll = Integer.parseInt(bufferedReader.readLine());
 
                         frame.setThirdExtraRollInTenthFrameKnockedDownPins(thirdRoll);
                         frame.roll(firstRoll, secondRoll);
 
                     } else if (((firstRoll + secondRoll) == 10)) {
                         System.out.println("There is an ability of the extra 1 roll, " +
-                                "due to spare in the 10th frame, please roll...");
+                                "due to spare bufferedReader the 10th frame, please roll...");
 
                         System.out.println("\nRoll 2: ");
-                        secondRoll = Integer.parseInt(in.readLine());
+                        secondRoll = Integer.parseInt(bufferedReader.readLine());
 
                         if (((firstRoll + secondRoll) < 10)) {
                             System.out.println("There is an extra third roll...");
@@ -74,7 +69,7 @@ public class TheWholeGame {
                     }
 
                     System.out.println("\nRoll 2: ");
-                    secondRoll = Integer.parseInt(in.readLine());
+                    secondRoll = Integer.parseInt(bufferedReader.readLine());
 
                     if (secondRoll < 0 || secondRoll > 10 || (firstRoll + secondRoll > 10)) {
                         System.out.println("You entered something wrong, please try again.");
