@@ -13,8 +13,8 @@
         </layout>
     </appender>
 
-    <logger name="java." additivity="false">
-        <level value="DEBUG"/>
+    <logger name="org.xander.bowling.Frame" additivity="false">
+        <level value="TRACE"/>
         <appender-ref ref="FILE"/>
     </logger>
  </log4j:configuration>

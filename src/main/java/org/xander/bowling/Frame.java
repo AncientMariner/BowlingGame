@@ -45,7 +45,7 @@ public class Frame {
 
     private void ordinaryRollFromFirstToNinthFrame(int firstRollKnockedDownPins, int secondRollKnockedDownPins) {
 
-        verifyPointsAreInGameRulesRange(firstRollKnockedDownPins, secondRollKnockedDownPins);
+        verifyPointsAreInGameRulesRangeForNonTenthFrame(firstRollKnockedDownPins + secondRollKnockedDownPins);
 
         if (firstRollKnockedDownPins + secondRollKnockedDownPins < MAX_KNOCKED_DOWN_PINS) {
             openFrameRoll(firstRollKnockedDownPins, secondRollKnockedDownPins);
@@ -100,7 +100,7 @@ public class Frame {
     }
 
     private void calculateScore(int firstRollKnockedDownPins, int secondRollKnockedDownPins) {
-        if (consecutiveStrike == true) {
+        if (    consecutiveStrike == true) {
             bonusForFirstRoll = 3;
         }
 
@@ -111,7 +111,7 @@ public class Frame {
     private void tenthFrameRoll(int firstRollKnockedDownPins, int secondRollKnockedDownPins, int thirdExtraRollInTenthFrameKnockedDownPins) {
         if (firstRollKnockedDownPins == MAX_KNOCKED_DOWN_PINS) {
             strikeInLastFrame(secondRollKnockedDownPins, thirdExtraRollInTenthFrameKnockedDownPins);
-        } else if ((firstRollKnockedDownPins + secondRollKnockedDownPins) == MAX_KNOCKED_DOWN_PINS) {
+        } else {
             spareInLastFrame(firstRollKnockedDownPins, secondRollKnockedDownPins, thirdExtraRollInTenthFrameKnockedDownPins);
         }
     }
@@ -128,30 +128,34 @@ public class Frame {
             gameTotalScore += MAX_KNOCKED_DOWN_PINS + MAX_KNOCKED_DOWN_PINS;
             strikesPerGameNumber += 2;
         } else {
+            verifyPointsAreInGameRulesRangeForTenthFrame(secondRollKnockedDownPins, thirdExtraRollInTenthFrameKnockedDownPins);
             gameTotalScore += secondRollKnockedDownPins;
             gameTotalScore += thirdExtraRollInTenthFrameKnockedDownPins;
         }
     }
 
     private void spareInLastFrame(int firstRollKnockedDownPins, int secondRollKnockedDownPins, int thirdExtraRollInTenthFrameKnockedDownPins) {
+        verifyPointsAreInGameRulesRangeForNonTenthFrame(firstRollKnockedDownPins + secondRollKnockedDownPins + thirdExtraRollInTenthFrameKnockedDownPins);
         gameTotalScore += firstRollKnockedDownPins + secondRollKnockedDownPins;
 
         if ((firstRollKnockedDownPins + secondRollKnockedDownPins) < MAX_KNOCKED_DOWN_PINS) {
-            extraThirdSpareRoll(firstRollKnockedDownPins, secondRollKnockedDownPins, thirdExtraRollInTenthFrameKnockedDownPins);
+            gameTotalScore += thirdExtraRollInTenthFrameKnockedDownPins;
         }
     }
 
-    private void extraThirdSpareRoll(int firstRollKnockedDownPins, int secondRollKnockedDownPins, int thirdExtraRollInTenthFrameKnockedDownPins) {
-        verifyPointsAreInGameRulesRange(firstRollKnockedDownPins + secondRollKnockedDownPins, thirdExtraRollInTenthFrameKnockedDownPins);
+    private void verifyPointsAreInGameRulesRangeForNonTenthFrame(int sumOfPointsForTwoRollsPerFrame) {
+        if (sumOfPointsForTwoRollsPerFrame > MAX_KNOCKED_DOWN_PINS || sumOfPointsForTwoRollsPerFrame < 0) {
+            System.out.println("There is something wrong with your bowling, please contact your local bowling dealer");
+            logger.error("Wrong entered number of knocked down pins");
 
-        gameTotalScore += thirdExtraRollInTenthFrameKnockedDownPins;
+            throw new RuntimeException();
+        }
     }
 
-    private void verifyPointsAreInGameRulesRange(int firstRollKnockedDownPins, int secondRollKnockedDownPins) {
-        int sumOfPointsForTwoRollsPerFrame = firstRollKnockedDownPins + secondRollKnockedDownPins;
-
-        if (sumOfPointsForTwoRollsPerFrame > MAX_KNOCKED_DOWN_PINS || sumOfPointsForTwoRollsPerFrame < 0) {
-            logger.error("There is something wrong with your bowling, please contact your local bowling dealer");
+    private void verifyPointsAreInGameRulesRangeForTenthFrame(int firstRollKnockedDownPins, int secondRollKnockedDownPins) {
+        if ((firstRollKnockedDownPins > MAX_KNOCKED_DOWN_PINS || firstRollKnockedDownPins < 0) && (secondRollKnockedDownPins > MAX_KNOCKED_DOWN_PINS || secondRollKnockedDownPins < 0)) {
+            System.out.println("There is something wrong with your bowling, please contact your local bowling dealer");
+            logger.error("Wrong entered number of knocked down pins");
 
             throw new RuntimeException();
         }
