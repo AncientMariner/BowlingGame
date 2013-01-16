@@ -12,7 +12,7 @@ public class Frame {
     public static int currentFrameNumber;
     public static int gameTotalScore;
     public static boolean consecutiveStrike;
-    private final int MAX_KNOCKED_DOWN_PINS = 10;
+    private static final int MAX_KNOCKED_DOWN_PINS = 10;
 
     private int currentFrameScore;
     private int thirdExtraRollInTenthFrameKnockedDownPins;
