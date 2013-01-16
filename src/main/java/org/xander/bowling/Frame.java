@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 
 public class Frame {
 
-    private Logger logger = Logger.getLogger(getClass());
+    private static final Logger logger = Logger.getLogger(Frame.class);
 
     public static int bonusForFirstRoll;
     public static int bonusForSecondRoll;
