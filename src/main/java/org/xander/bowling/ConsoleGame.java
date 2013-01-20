@@ -9,7 +9,6 @@ import static java.lang.System.exit;
 public class ConsoleGame {
 
     public static void main(String[] args) {
-
         InputStreamReader inputStreamReader = new InputStreamReader(System.in);
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 
@@ -30,7 +29,9 @@ public class ConsoleGame {
                 "Your final score is: " + Frame.gameTotalScore);
     }
 
-    private static void role(BufferedReader bufferedReader, int frameNumber, Frame frame) {
+    private static void role(BufferedReader bufferedReader,
+                             int frameNumber,
+                             Frame frame) {
         int firstRoll;
         try {
             System.out.println("\nRoll 1: ");
@@ -53,7 +54,9 @@ public class ConsoleGame {
         }
     }
 
-    private static boolean ordinaryRollFromFirstToNinthFrame(BufferedReader bufferedReader, int firstRoll, Frame frame) throws IOException {
+    private static boolean ordinaryRollFromFirstToNinthFrame(BufferedReader bufferedReader,
+                                                             int firstRoll,
+                                                             Frame frame) throws IOException {
         int secondRoll;
 
         if (firstRoll == 10) {
@@ -77,7 +80,9 @@ public class ConsoleGame {
         return false;
     }
 
-    private static void tenthFrameRoll(BufferedReader bufferedReader, int firstRoll, Frame frame) throws IOException {
+    private static void tenthFrameRoll(BufferedReader bufferedReader,
+                                       int firstRoll,
+                                       Frame frame) throws IOException {
         if (firstRoll == 10) {
             strikeInLastFrame(bufferedReader, firstRoll, frame);
         } else {
@@ -85,7 +90,9 @@ public class ConsoleGame {
         }
     }
 
-    private static void strikeInLastFrame(BufferedReader bufferedReader, int firstRoll, Frame frame) throws IOException {
+    private static void strikeInLastFrame(BufferedReader bufferedReader,
+                                          int firstRoll,
+                                          Frame frame) throws IOException {
         int secondRoll;
         int thirdRoll;
         System.out.println("There is an ability of the extra 2 rolls, " +
@@ -101,7 +108,9 @@ public class ConsoleGame {
         frame.roll(firstRoll, secondRoll);
     }
 
-    private static void spareInLastFrame(BufferedReader bufferedReader, int firstRoll, Frame frame) throws IOException {
+    private static void spareInLastFrame(BufferedReader bufferedReader,
+                                         int firstRoll,
+                                         Frame frame) throws IOException {
         int secondRoll;
         int thirdRoll;
 

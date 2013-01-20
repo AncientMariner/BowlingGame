@@ -12,7 +12,7 @@ public class RandomGameTest {
         Frame.gameTotalScore = 0;
         Frame.currentFrameNumber = 0;
         Frame.strikesPerGameNumber = 0;
-        Frame.consecutiveStrike = false;
+        Roll.consecutiveStrike = false;
         Frame.bonusForFirstRoll = 1;
         Frame.bonusForSecondRoll = 1;
     }
