@@ -13,7 +13,7 @@
         </layout>
     </appender>
 
-    <logger name="org.xander.bowling.Frame" additivity="false">
+    <logger name="org.xander.bowlingEngine.Frame" additivity="false">
         <level value="TRACE"/>
         <appender-ref ref="FILE"/>
     </logger>
