@@ -10,12 +10,13 @@ public class Roll {
 
     public static boolean consecutiveStrike;
 
-    private final Frame frame;
-    private final VerifyPointsAreInGameRulesRange verifyPointsAreInGameRulesRange =
-                                                                              new VerifyPointsAreInGameRulesRange();
+    private final VerifyPointsAreInGameRulesRange verifyPointsAreInGameRulesRange;
+    private final Calculation calculation;
 
     public Roll(Frame frame) {
-        this.frame = frame;
+        calculation = frame.getCalculation();
+        this.verifyPointsAreInGameRulesRange  = new VerifyPointsAreInGameRulesRange();
+
     }
 
     void ordinaryRollFromFirstToNinthFrame(int firstRollKnockedDownPins, int secondRollKnockedDownPins) {
@@ -41,7 +42,8 @@ public class Roll {
     }
 
     private void openFrameRoll(int firstRollKnockedDownPins, int secondRollKnockedDownPins) {
-        frame.calculateScore(firstRollKnockedDownPins, secondRollKnockedDownPins);
+
+        calculation.calculateScore(firstRollKnockedDownPins, secondRollKnockedDownPins);
 
         Frame.bonusForFirstRoll = singleBonus;
         Frame.bonusForSecondRoll = singleBonus;
@@ -50,7 +52,7 @@ public class Roll {
     }
 
     private void spare(int firstRollKnockedDownPins, int secondRollKnockedDownPins) {
-        frame.calculateScore(firstRollKnockedDownPins, secondRollKnockedDownPins);
+        calculation.calculateScore(firstRollKnockedDownPins, secondRollKnockedDownPins);
 
         Frame.bonusForFirstRoll = doubleBonus;
         Frame.bonusForSecondRoll = singleBonus;
@@ -61,7 +63,7 @@ public class Roll {
     private void strike() {
         Frame.strikesPerGameNumber++;
 
-        frame.calculateScore(MAX_KNOCKED_DOWN_PINS, 0);
+        calculation.calculateScore(MAX_KNOCKED_DOWN_PINS, 0);
 
         if (Frame.bonusForFirstRoll == doubleBonus || Frame.bonusForSecondRoll == doubleBonus) {
             consecutiveStrike = true;
@@ -71,7 +73,7 @@ public class Roll {
         Frame.bonusForSecondRoll = doubleBonus;
 
         if (Frame.strikesPerGameNumber == 9) {
-            Frame.gameTotalScore = 270;
+            Frame.setGameTotalScore(270);
         }
     }
 }

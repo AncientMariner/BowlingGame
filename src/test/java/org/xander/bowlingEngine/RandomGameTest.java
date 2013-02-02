@@ -35,6 +35,6 @@ public class RandomGameTest {
         Frame frame3 = new Frame();
         frame3.roll(firstRollKnockedDownPins, secondRollKnockedDownPins);
 
-        assertEquals(46, Frame.gameTotalScore);
+        assertEquals(46, Frame.getGameTotalScore());
     }
 }

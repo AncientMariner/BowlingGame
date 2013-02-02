@@ -3,10 +3,12 @@ package utils;
 import org.xander.bowlingEngine.Frame;
 import org.xander.bowlingEngine.Roll;
 
+import static org.xander.bowlingEngine.Frame.clearTotalScore;
+
 public class ClearScoreBeforeNextGame {
 
     public void clear() {
-        Frame.clearTotalScore();
+        clearTotalScore();
         Frame.currentFrameNumber = 0;
         Frame.strikesPerGameNumber = 0;
         Roll.consecutiveStrike = false;

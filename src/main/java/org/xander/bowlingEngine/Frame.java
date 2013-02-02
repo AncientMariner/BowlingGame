@@ -10,13 +10,27 @@ public class Frame {
     public static int strikesPerGameNumber;
     public static int currentFrameNumber;
 
-    protected static int gameTotalScore;
+    private static int gameTotalScore;
 
     private int currentFrameScore;
-    private int thirdExtraRollInTenthFrameKnockedDownPins;
 
-    private final Roll roll = new Roll(this);
-    private final TenthFrame tenthFrame = new TenthFrame();
+    private final Calculation calculation;
+    private final Roll roll;
+    private final TenthFrame tenthFrame;
+
+    public Frame() {
+        this.calculation = new Calculation(this);
+        this.roll = new Roll(this);
+        this.tenthFrame = new TenthFrame();
+    }
+
+    public Calculation getCalculation() {
+        return calculation;
+    }
+
+    public void setThirdRollInTenthFrame(int thirdRollInTenthFrame) {
+        tenthFrame.setThirdExtraRollInTenthFrameKnockedDownPins(thirdRollInTenthFrame);
+    }
 
     public static void clearTotalScore(){
         gameTotalScore = 0;
@@ -26,12 +40,8 @@ public class Frame {
         return gameTotalScore;
     }
 
-    public int getThirdExtraRollInTenthFrameKnockedDownPins() {
-        return thirdExtraRollInTenthFrameKnockedDownPins;
-    }
-
-    public void setThirdExtraRollInTenthFrameKnockedDownPins(int thirdExtraRollInTenthFrameKnockedDownPins) {
-        this.thirdExtraRollInTenthFrameKnockedDownPins = thirdExtraRollInTenthFrameKnockedDownPins;
+    public static void setGameTotalScore(int gameTotalScore) {
+        Frame.gameTotalScore = gameTotalScore;
     }
 
     public int getCurrentFrameScore() {
@@ -49,25 +59,9 @@ public class Frame {
         if (currentFrameNumber == 10) {
             tenthFrame.tenthFrameRoll(firstRollKnockedDownPins,
                                       secondRollKnockedDownPins,
-                                      getThirdExtraRollInTenthFrameKnockedDownPins());
+                                      tenthFrame.getThirdExtraRollInTenthFrameKnockedDownPins());
         } else {
             roll.ordinaryRollFromFirstToNinthFrame(firstRollKnockedDownPins, secondRollKnockedDownPins);
         }
-    }
-
-    protected void calculateScore(int firstRollKnockedDownPins,
-                                  int secondRollKnockedDownPins) {
-        calculateCurrentFrameScore(firstRollKnockedDownPins, secondRollKnockedDownPins);
-        calculateTotalScore();
-    }
-
-    private void calculateCurrentFrameScore(int firstRollKnockedDownPins,
-                                            int secondRollKnockedDownPins) {
-        setCurrentFrameScore(firstRollKnockedDownPins * bonusForFirstRoll +
-                secondRollKnockedDownPins * bonusForSecondRoll);
-    }
-
-    private void calculateTotalScore() {
-        gameTotalScore += getCurrentFrameScore();
     }
 }

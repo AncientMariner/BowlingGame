@@ -106,7 +106,7 @@ public class ConsoleGame {
         System.out.println("\nRoll 3: ");
         thirdRoll = Integer.parseInt(bufferedReader.readLine());
 
-        frame.setThirdExtraRollInTenthFrameKnockedDownPins(thirdRoll);
+        frame.setThirdRollInTenthFrame(thirdRoll);
         frame.roll(firstRoll, secondRoll);
     }
 
@@ -126,7 +126,7 @@ public class ConsoleGame {
             System.out.println("\nRoll 3: ");
             thirdRoll = Integer.parseInt(bufferedReader.readLine());
 
-            frame.setThirdExtraRollInTenthFrameKnockedDownPins(thirdRoll);
+            frame.setThirdRollInTenthFrame(thirdRoll);
         }
         frame.roll(firstRoll, secondRoll);
     }

@@ -41,6 +41,6 @@ public class TurkeyOrTriplePinfallGameTest {
         Frame frame4 = new Frame();
         frame4.roll(firstRollKnockedDownPins, secondRollKnockedDownPins);
 
-        Assert.assertEquals(78, Frame.gameTotalScore);
+        Assert.assertEquals(78, Frame.getGameTotalScore());
     }
 }

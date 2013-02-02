@@ -46,13 +46,13 @@ public class TenStrikesGameTest {
         Frame frame9 = new Frame();
         frame9.roll(firstRollKnockedDownPins, secondRollKnockedDownPins);
 
-        Assert.assertEquals(270, Frame.gameTotalScore);
+        Assert.assertEquals(270, Frame.getGameTotalScore());
 
         Frame frame10 = new Frame();
-        frame10.setThirdExtraRollInTenthFrameKnockedDownPins(0);
+        frame10.setThirdRollInTenthFrame(0);
         frame10.roll(extra10thFirstSrike, 0);
 
         Assert.assertEquals(10, Frame.strikesPerGameNumber);
-        Assert.assertEquals(280, Frame.gameTotalScore);
+        Assert.assertEquals(280, Frame.getGameTotalScore());
     }
 }

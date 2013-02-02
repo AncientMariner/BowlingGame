@@ -76,9 +76,9 @@ public class UsualGameTest {
 
         Frame frame10 = new Frame();
 
-        frame10.setThirdExtraRollInTenthFrameKnockedDownPins(thirdExtraRollDueToSpare);
+        frame10.setThirdRollInTenthFrame(thirdExtraRollDueToSpare);
         frame10.roll(firstRollKnockedDownPins, secondRollKnockedDownPins);
 
-        Assert.assertEquals(117, Frame.gameTotalScore);
+        Assert.assertEquals(117, Frame.getGameTotalScore());
     }
 }

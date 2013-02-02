@@ -49,13 +49,13 @@ public class PerfectGameTest {
         Frame frame9 = new Frame();
         frame9.roll(firstRollKnockedDownPins, secondRollKnockedDownPins);
 
-        Assert.assertEquals(270, Frame.gameTotalScore);
+        Assert.assertEquals(270, Frame.getGameTotalScore());
 
         Frame frame10 = new Frame();
-        frame10.setThirdExtraRollInTenthFrameKnockedDownPins(extra10thSecondStrike);
+        frame10.setThirdRollInTenthFrame(extra10thSecondStrike);
         frame10.roll(extra10thFirstStrike, extra10thSecondStrike);
 
         Assert.assertEquals(numberOfStrikesInPerfectGame, Frame.strikesPerGameNumber);
-        Assert.assertEquals(maximumPointsInBowlingGame, Frame.gameTotalScore);
+        Assert.assertEquals(maximumPointsInBowlingGame, Frame.getGameTotalScore());
     }
 }

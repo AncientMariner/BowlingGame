@@ -74,10 +74,10 @@ public class ThreeStrikesInLastFrameTest {
         int extra10thSecondStrike = 10;
 
         Frame frame10 = new Frame();
-        frame10.setThirdExtraRollInTenthFrameKnockedDownPins(extra10thSecondStrike);
+        frame10.setThirdRollInTenthFrame(extra10thSecondStrike);
         frame10.roll(extra10thFirstSrike, extra10thSecondStrike);
 
-        Assert.assertEquals(137, Frame.gameTotalScore);
+        Assert.assertEquals(137, Frame.getGameTotalScore());
     }
 
 }
